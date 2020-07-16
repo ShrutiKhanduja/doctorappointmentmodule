@@ -37,9 +37,12 @@ class _LoginPageState extends State<LoginPage> {
                },
            obscureText: true,
              ),
+
              InkWell(
-               child:Text('Forgot Password'
-               ),
+               child:Text('Forgot Password?'
+                ),
+               focusColor: Colors.blue,
+
                onTap:(){
                  Navigator.of(context).pushReplacementNamed('/resetpassword');
                }
@@ -60,7 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                    if(user.isEmailVerified) {
                      Navigator.of(context).pushReplacementNamed('/homepage');
                    }
-                   else
+
 
                  }).catchError((e){
                        print(e);

@@ -11,20 +11,23 @@ class _ResetPasswordState extends State<ResetPassword> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(title: Text('Reset Password'),
+      appBar: AppBar(title: Center(child: Text('Reset Password')),
         backgroundColor: Colors.blue,
       ),
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          TextField(
-              decoration: InputDecoration(hintText: 'Email'),
-              onChanged: (value) {
-                setState(() {
-                  _email = value;
-                });
-              }
-          ),
+      body: Container(
+        margin: EdgeInsets.all(25.0),
+        child: Column(
+
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            TextField(
+                decoration: InputDecoration(hintText: 'Email'),
+                onChanged: (value) {
+                  setState(() {
+                    _email = value;
+                  });
+                }
+             ),
 
     SizedBox(height :20.0),
     RaisedButton(
@@ -32,10 +35,14 @@ class _ResetPasswordState extends State<ResetPassword> {
     color:Colors.blue,
     textColor:Colors.white,
     elevation: 7.0,
-      onPressed:()async {
-          await mAuth.sendPasswordResetEmail(email: _emailController.text);
-        FirebaseAuth mAuth= FirebaseAuth.instance;}
+        onPressed:()async {
+          FirebaseAuth mAuth= FirebaseAuth.instance;
+            await mAuth.sendPasswordResetEmail(email: _email);
 
-]    )],
+          }
+
+,   ),]
+        ),
       ),);
   }
+}
