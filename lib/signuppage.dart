@@ -1,7 +1,9 @@
 import 'package:doctorappointmentmodule/services/usermanagement.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
 class SignupPage extends StatefulWidget {
   @override
   _SignupPageState createState() => _SignupPageState();
@@ -47,11 +49,13 @@ class _SignupPageState extends State<SignupPage> {
                         FirebaseAuth.instance.createUserWithEmailAndPassword(
                             email: _email,
                             password: _password
-                        ).then((signedInUser) {
-                          UserManagement().storeNewUser(signedInUser,context);
-    
+                        ).then((AuthResult)async {
+                          FirebaseUser newUser =await FirebaseAuth.instance.currentUser();
+                          UserManagement().storeNewUser(newUser,context);
+                          newUser.sendEmailVerification();
                         }).catchError((e) {
                           print(e);
+                          print('hihihihi');
                         });
                       }
                     ),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'loginpage.dart';
 import'signuppage.dart';
 import'homepage.dart';
+import 'resetpassword.dart';
 void main() {
   runApp(MyApp());
 }
@@ -15,7 +16,8 @@ class MyApp extends StatelessWidget {
       routes:<String, WidgetBuilder> {
     '/landingpage':(BuildContext context)=> new MyApp(),
     '/signup':(BuildContext context)=> new SignupPage(),
-        '/homepage':(BuildContext context)=> new HomePage()
+        '/homepage':(BuildContext context)=> new HomePage(),
+        '/resetpassword':(BuildContext context)=> new ResetPassword()
     },
     );
   }

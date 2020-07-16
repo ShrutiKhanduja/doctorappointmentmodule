@@ -37,6 +37,15 @@ class _LoginPageState extends State<LoginPage> {
                },
            obscureText: true,
              ),
+             InkWell(
+               child:Text('Forgot Password'
+               ),
+               onTap:(){
+                 Navigator.of(context).pushReplacementNamed('/resetpassword');
+               }
+
+               ,
+             ),
              SizedBox(height :20.0),
              RaisedButton(
                child:Text('Login'),
@@ -46,8 +55,13 @@ class _LoginPageState extends State<LoginPage> {
                onPressed: (){
                  FirebaseAuth.instance.signInWithEmailAndPassword(
                      email: _email,
-                     password: _password).then( (user)  {
-                       Navigator.of(context).pushReplacementNamed('/homepage');
+                     password: _password).then( (AuthResult)async  {
+                   FirebaseUser user =await FirebaseAuth.instance.currentUser();
+                   if(user.isEmailVerified) {
+                     Navigator.of(context).pushReplacementNamed('/homepage');
+                   }
+                   else
+
                  }).catchError((e){
                        print(e);
                  });
