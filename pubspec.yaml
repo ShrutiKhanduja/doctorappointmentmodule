@@ -12,6 +12,8 @@ environment:
 dependencies:
   firebase_auth:
   cloud_firestore:
+  rflutter_alert: ^1.0.3
+  email_validator: '^1.0.0'
   flutter:
     sdk: flutter
 
@@ -28,4 +30,5 @@ flutter:
 
 
   uses-material-design: true
-
+  assets:
+    - android/images/pill.png
