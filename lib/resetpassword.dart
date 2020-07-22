@@ -9,52 +9,127 @@ class ResetPassword extends StatefulWidget {
 
 String _email;
 
+
 class _ResetPasswordState extends State<ResetPassword> {
+  static final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
-    final _formKey = GlobalKey<FormState>();
+    
+    final pHeight=MediaQuery.of(context).size.height;
+    final pWidth=MediaQuery.of(context).size.width;
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: Center(child: Text('Reset Password')),
-        backgroundColor: Colors.blue,
-      ),
-      body: Form(
-        key: _formKey,
-        child: Container(
-          margin: EdgeInsets.all(25.0),
-          child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                TextFormField(
-                  decoration: InputDecoration(hintText: 'Email'),
-                  keyboardType: TextInputType.emailAddress,
-                  validator: (value) {
-                    if (!EmailValidator.validate(value)) {
-                      return 'Please enter a valid email';
-                    }
-                    return null;
-                  },
-                  onSaved: (value) => _email = value,
-                ),
-                SizedBox(height: 20.0),
-                RaisedButton(
-                  child: Text('Reset Password'),
-                  color: Colors.blue,
-                  textColor: Colors.white,
-                  elevation: 7.0,
-                  onPressed: () async {
-                    if (_formKey.currentState.validate()) {
-                      _formKey.currentState.save();
-                      FirebaseAuth mAuth = FirebaseAuth.instance;
-                      await mAuth.sendPasswordResetEmail(email: _email);
-                    }
+      resizeToAvoidBottomInset: false,
 
-                  }
+      body:
+
+      Stack(
+        children: <Widget>[
+          Positioned(
+            top:0.0,
+            right:0.0,
+            child:Container(
+              height:pHeight*0.17,
+              width:pWidth*0.35,
+              decoration:BoxDecoration(
+                color:Colors.lightBlue[800],
+                borderRadius:BorderRadius.only(
+                  bottomLeft:Radius.circular(pHeight*0.3),
                 ),
-              ]),
+              ),
+            ),
+          ),
+          Positioned(
+              top:16.0,
+              right:16.0,
+              child:
+              Container(
+
+                child: Image(
+                    image:AssetImage('android/images/injection.png')
+                ),
+              )
+
+          ),
+          Form(
+          key: _formKey,
+          child: Container(
+            margin: EdgeInsets.all(25.0),
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: <Widget>[
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: Image(
+
+                        image: AssetImage('android/images/heart4.png')
+
+                    ),
+                  ),
+                  Container(
+                    alignment: Alignment.topLeft,
+                    child: Text('PATIENT',
+                      style:TextStyle(
+                        fontSize: 30.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.lightBlue[800],
+
+                      ),
+
+                    ),
+                  ),
+                  TextFormField(
+                    decoration: InputDecoration(hintText: 'Email',
+                        enabledBorder:OutlineInputBorder(
+                          borderRadius:BorderRadius.circular(30),
+                          borderSide:BorderSide(
+                              color:Colors.lightBlue[800],
+                              width:2.0
+                          ),),
+                        border:OutlineInputBorder(
+                            borderRadius:BorderRadius.circular(30),
+                            borderSide:BorderSide(
+                                color:Colors.lightBlue[800],
+                                width:3.0
+                            )
+                        ) ),
+                    keyboardType: TextInputType.emailAddress,
+                    validator: (value) {
+                      if (!EmailValidator.validate(value)) {
+                        return 'Please enter a valid email';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) => _email = value,
+                  ),
+                  SizedBox(height: 20.0),
+                  Container(
+                    width:400.0,
+                    child: RaisedButton(
+                      child: Text('Reset Password'),
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0)),
+                        color: Colors.lightBlue[800],
+                        textColor: Colors.white,
+                        elevation: 7.0,
+
+                      onPressed: () async {
+                        if (_formKey.currentState.validate()) {
+                          _formKey.currentState.save();
+                          FirebaseAuth mAuth = FirebaseAuth.instance;
+                          await mAuth.sendPasswordResetEmail(email: _email);
+                        }
+
+                      }
+                    ),
+                  ),
+                ]),
+          ),
         ),
+  ],
       ),
+
     );
   }
 }
