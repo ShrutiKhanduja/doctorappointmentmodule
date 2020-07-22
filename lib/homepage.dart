@@ -16,7 +16,8 @@ class _HomePageState extends State<HomePage> {
         appBar: AppBar(
           title: Text('Dashboard'),
           actions: <Widget>[
-            IconButton(icon: Icon(Icons.add),
+            IconButton(icon: Icon(Icons.add,
+            color: Colors.orange,),
                 onPressed: () {
                   addDialog(context);
                 }
