@@ -14,7 +14,11 @@ class _SignupPageState extends State<SignupPage> {
   String _email;
   String _password;
  static final _formKey = GlobalKey<FormState>();
+  bool _passwordObscured;
   @override
+  void initState(){
+    _passwordObscured=true;
+  }
   Widget build(BuildContext context) {
 
     final pHeight=MediaQuery.of(context).size.height;
@@ -82,6 +86,7 @@ class _SignupPageState extends State<SignupPage> {
                       ),
                           TextFormField(
                             decoration: InputDecoration(hintText: 'Email',
+                                prefixIcon: Icon(Icons.email),
                                 enabledBorder:OutlineInputBorder(
                                 borderRadius:BorderRadius.circular(30),
                             borderSide:BorderSide(
@@ -109,6 +114,7 @@ class _SignupPageState extends State<SignupPage> {
                           SizedBox(height: 15.0),
                           TextFormField(
                             decoration: InputDecoration(hintText: 'Password',
+                                prefixIcon:Icon(Icons.lock),
                                 enabledBorder:OutlineInputBorder(
                                   borderRadius:BorderRadius.circular(30),
                                   borderSide:BorderSide(
@@ -121,7 +127,18 @@ class _SignupPageState extends State<SignupPage> {
                                         color:Colors.lightBlue[800],
                                         width:3.0
                                     )
-                                ) ),
+                                ) ,
+                                suffixIcon:IconButton(
+                                    icon:Icon(
+                                        _passwordObscured?Icons.visibility_off:Icons.visibility,
+                                        color:Colors.grey
+                                    ),
+                                    onPressed:(){
+                                      setState(() {
+                                        _passwordObscured=!_passwordObscured;
+                                      });
+                                    }
+                                )),
                             validator: (value) {
                               if (value.isEmpty) {
                                 return 'Invalid Password';
@@ -130,7 +147,7 @@ class _SignupPageState extends State<SignupPage> {
                             },
                             onSaved: (value) => _password = value,
 
-                            obscureText: true,
+                            obscureText: _passwordObscured,
 
                           ),
                           SizedBox(height: 20.0),
@@ -157,7 +174,8 @@ class _SignupPageState extends State<SignupPage> {
                                       UserManagement().storeNewUser(
                                           newUser, context);
                                       newUser.sendEmailVerification();
-                                      Alert(context: context, title: "Email Verification", desc: "Please verify your email").show();
+                                      FirebaseAuth.instance.signOut();
+                                      Navigator.of(context).pushReplacementNamed('/loginpage');
                                     }).catchError((e) {
                                       switch (e.code) {
                                         case "ERROR_EMAIL_ALREADY_IN_USE":

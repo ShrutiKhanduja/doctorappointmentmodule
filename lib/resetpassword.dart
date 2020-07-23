@@ -81,6 +81,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                   ),
                   TextFormField(
                     decoration: InputDecoration(hintText: 'Email',
+                        prefixIcon:Icon(Icons.email),
                         enabledBorder:OutlineInputBorder(
                           borderRadius:BorderRadius.circular(30),
                           borderSide:BorderSide(

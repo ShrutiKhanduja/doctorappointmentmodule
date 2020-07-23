@@ -9,15 +9,13 @@ class HomePage extends StatefulWidget {
 }
 class _HomePageState extends State<HomePage> {
   @override
-
-
   Widget build(BuildContext context) {
     return Scaffold(
         appBar: AppBar(
           title: Text('Dashboard'),
           actions: <Widget>[
             IconButton(icon: Icon(Icons.add,
-            color: Colors.orange,),
+              color: Colors.white,),
                 onPressed: () {
                   addDialog(context);
                 }
@@ -27,29 +25,71 @@ class _HomePageState extends State<HomePage> {
           backgroundColor: Colors.blue,
         ),
         backgroundColor: Colors.white,
-        body: StreamBuilder(
-            stream: Firestore.instance.collection('Doctor').snapshots(),
-            builder: _doctorList
-        ));
+        body: Column(
+          children: <Widget>[
+            StreamBuilder(
+                stream: Firestore.instance.collection('Doctor').snapshots(),
+                builder: _doctorList
+
+            ),
+            Container(
+              alignment: Alignment.bottomCenter,
+              child: RaisedButton(
+                child:Text('Sign out'),
+    shape: RoundedRectangleBorder(
+    borderRadius: BorderRadius.circular(20.0)),
+    color: Colors.lightBlue[800],
+    textColor: Colors.white,
+    elevation: 7.0,
+              onPressed: (){
+                FirebaseAuth.instance.signOut();
+                Navigator.of(context).pushReplacementNamed('/loginpage');
+              },),
+            ),
+            SizedBox(height: 10.0),
+            InkWell(
+              child: Center(
+                child: Text('Store files here',
+                    style:TextStyle(
+                        color:Colors.grey,
+                        fontWeight: FontWeight.bold
+                    )),
+              ),
+              onTap: () {
+                Navigator.of(context)
+                    .pushReplacementNamed('/storage');
+              },
+            ),
+
+
+          ],
+        )
+    );
   }
 
-  Widget _doctorList(BuildContext context,
-      AsyncSnapshot<QuerySnapshot>snapshot) {
-    if (snapshot.hasData) {
-      return ListView.builder(
-        itemCount: snapshot.data.documents.length,
-        padding: EdgeInsets.all(5.0),
-        itemBuilder: (context, i) {
-          DocumentSnapshot doctors = snapshot.data.documents[i];
-          return ListTile(
-            title: Text(doctors.data['Doctor\'s name']),
-            subtitle: Text(doctors.data['Specialisation']),
+    Widget _doctorList(BuildContext context,
+        AsyncSnapshot<QuerySnapshot>snapshot) {
+      if (snapshot.hasData) {
+        return Expanded(
+          child: SizedBox(
+            height:200.0,
+            child: ListView.builder(
+              itemCount: snapshot.data.documents.length,
+              padding: EdgeInsets.all(5.0),
+              itemBuilder: (context, i) {
+                DocumentSnapshot doctors = snapshot.data.documents[i];
+                return ListTile(
+                  title: Text(doctors.data['Doctor\'s name']),
+                  subtitle: Text(doctors.data['Specialisation']),
 
-          );
-        },
-      );
+                );
+              },
+            ),
+          ),
+        );
+      }
     }
-  }
+
 
 
   QuerySnapshot doctors;

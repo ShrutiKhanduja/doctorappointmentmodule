@@ -11,7 +11,11 @@ class _LoginPageState extends State<LoginPage> {
   String _email;
   String _password;
    static final _formKey = GlobalKey<FormState>();
+   bool _passwordObscured;
   @override
+void initState(){
+    _passwordObscured=true;
+  }
   Widget build(BuildContext context) {
     final pHeight=MediaQuery.of(context).size.height;
     final pWidth=MediaQuery.of(context).size.width;
@@ -72,6 +76,7 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       TextFormField(
                         decoration: InputDecoration(hintText: 'Email',
+                       prefixIcon:Icon(Icons.email),
                        enabledBorder:OutlineInputBorder(
                          borderRadius:BorderRadius.circular(30),
                          borderSide:BorderSide(
@@ -99,6 +104,7 @@ class _LoginPageState extends State<LoginPage> {
                       SizedBox(height: 15.0),
                       TextFormField(
                         decoration: InputDecoration(hintText: 'Password',
+                          prefixIcon:Icon(Icons.lock),
                           enabledBorder:OutlineInputBorder(
                             borderRadius:BorderRadius.circular(30),
                             borderSide:BorderSide(
@@ -111,7 +117,19 @@ class _LoginPageState extends State<LoginPage> {
                                   color:Colors.lightBlue[800],
                                     width:3.0
                                 )
-                            )),
+                            ),
+                        suffixIcon:IconButton(
+                          icon:Icon(
+                            _passwordObscured?Icons.visibility_off:Icons.visibility,
+                            color:Colors.grey
+                          ),
+                          onPressed:(){
+                            setState(() {
+                              _passwordObscured=!_passwordObscured;
+                            });
+                          }
+                         )
+                        ),
                         validator:(value){
                           if(value.isEmpty){
                             return 'Invalid Password';
@@ -119,7 +137,8 @@ class _LoginPageState extends State<LoginPage> {
                           return null;
                         },
                         onSaved:(value)=>_password=value,
-                        obscureText: true,
+                        obscureText: _passwordObscured,
+
                       ),
                       SizedBox(height: 20.0),
                       Container(
